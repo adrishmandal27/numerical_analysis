@@ -21,6 +21,12 @@ public class Interpolation_Comm {
             System.out.print("y_"+i+":");
             y[i]=sc.nextDouble();
         }System.out.println("");
+        for(int i=0;i<n;i++)
+            for(int j=i+1;j<n;j++)
+                if(x[i]==x[j]) {
+                    System.out.println("Two or more same x-coordinate present");
+                    System.exit(0);
+                }
     }
     public void x_input() {
         System.out.println("Enter the value of x to find the value of y");
