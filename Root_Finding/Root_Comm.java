@@ -1,3 +1,4 @@
+package Root_Finding;
 import java.util.Scanner;
 public class Root_Comm {
     Scanner sc = new Scanner(System.in);

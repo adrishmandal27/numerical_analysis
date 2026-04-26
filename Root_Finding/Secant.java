@@ -1,3 +1,4 @@
+package Root_Finding;
 public class Secant extends Root_Comm {
     double x;
     Secant() {

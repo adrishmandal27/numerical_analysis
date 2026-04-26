@@ -1,3 +1,4 @@
+package Root_Finding;
 public class NewtonRaphson extends Root_Comm {
     double x1,x2;
     double arr[],arr_diff[];
