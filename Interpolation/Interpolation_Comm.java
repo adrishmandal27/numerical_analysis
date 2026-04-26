@@ -1,3 +1,4 @@
+package Interpolation;
 import java.util.Scanner;
 public class Interpolation_Comm {
     Scanner sc=new Scanner(System.in);

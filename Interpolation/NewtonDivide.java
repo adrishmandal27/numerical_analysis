@@ -1,3 +1,4 @@
+package Interpolation;
 import java.util.Scanner;
 public class NewtonDivide extends Interpolation_Comm{
     static Scanner sc=new Scanner(System.in);

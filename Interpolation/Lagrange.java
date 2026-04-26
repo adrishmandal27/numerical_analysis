@@ -1,3 +1,4 @@
+package Interpolation;
 public class Lagrange extends Interpolation_Comm{
     public void interpolate(){
         for(int i=0;i<super.n;i++) {
