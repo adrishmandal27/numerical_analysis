@@ -1,7 +1,5 @@
 package Interpolation;
-import java.util.Scanner;
 public class NewtonDivide extends Interpolation_Comm{
-    static Scanner sc=new Scanner(System.in);
     double diffTab[][];
     NewtonDivide() {
         diffTab=new double[0][0];
