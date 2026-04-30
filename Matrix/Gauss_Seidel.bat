@@ -1,0 +1,1 @@
+javac Gauss_Seidel.java

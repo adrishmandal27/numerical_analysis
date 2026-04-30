@@ -1,0 +1,1 @@
+javac NewtonDivide.java
