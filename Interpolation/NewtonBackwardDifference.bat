@@ -1,1 +1,0 @@
-javac NewtonBackwardDifference.java

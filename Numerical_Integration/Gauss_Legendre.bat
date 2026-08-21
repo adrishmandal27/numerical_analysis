@@ -1,1 +1,0 @@
-javac Gauss_Legendre.java

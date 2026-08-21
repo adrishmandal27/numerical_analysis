@@ -1,0 +1,6 @@
+target/
+bin/
+*.class
+*.jar
+.vscode/
+.settings/
