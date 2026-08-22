@@ -1,5 +1,9 @@
 # Numerical Analysis Toolkit
 
+**🌐 Live Web Portal:** [https://adrishmandal27.github.io/numerical_analysis/](https://adrishmandal27.github.io/numerical_analysis/)
+
+![Numerical Analysis Web Portal Preview](preview.png)
+
 A high-performance computational suite implementing 15 classical numerical methods. Originally built as a modular Java library and CLI, the project now features a complete, interactive **Web-Based Portal** powered by a JavaScript math engine and a custom-designed user interface.
 
 ---
