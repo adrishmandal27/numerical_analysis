@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Fixes Mobile Scaling -->
     <title>Numerical Analysis Toolkit</title>
     <link rel="icon" href="A.png" type="image/icon type">
     
@@ -105,31 +106,44 @@
           <h2 class="text-2xl font-bold text-slate-100 mb-4">Welcome to the Numerical Engine</h2>
           <p class="text-slate-400 mb-8 leading-relaxed">Open the <strong>☰ Menu</strong> at the top left to switch between algorithms. This interactive engine supports 15 classical numerical methods.</p>
           
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Responsive Grid: 1 col on mobile, 2 on tablet, 3 on large screens -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            
             <div class="bg-slate-950 p-5 rounded-lg border border-slate-800">
               <h3 class="text-sky-400 font-semibold mb-2">Root Finding</h3>
               <ul class="text-sm text-slate-400 space-y-1 list-disc pl-4">
                 <li>Bisection Method</li><li>Regula Falsi</li><li>Newton-Raphson</li><li>Secant Method</li>
               </ul>
             </div>
+            
             <div class="bg-slate-950 p-5 rounded-lg border border-slate-800">
               <h3 class="text-amber-400 font-semibold mb-2">Interpolation</h3>
               <ul class="text-sm text-slate-400 space-y-1 list-disc pl-4">
-                <li>Lagrange Interpolation</li><li>Newton Forward Difference</li><li>Newton Backward Difference</li><li>Newton Divided Difference</li><li>Linear Interpolation</li>
+                <li>Lagrange Interpolation</li><li>Newton Forward Difference</li><li>Newton Backward Difference</li><li>Newton Divided Difference</li>
               </ul>
             </div>
+            
             <div class="bg-slate-950 p-5 rounded-lg border border-slate-800">
               <h3 class="text-purple-400 font-semibold mb-2">Numerical Integration</h3>
               <ul class="text-sm text-slate-400 space-y-1 list-disc pl-4">
                 <li>Trapezoidal Rule</li><li>Simpson's 1/3 Rule</li><li>Simpson's 3/8 Rule</li><li>Gauss-Legendre Quadrature</li>
               </ul>
             </div>
+            
             <div class="bg-slate-950 p-5 rounded-lg border border-slate-800">
-              <h3 class="text-rose-400 font-semibold mb-2">Calculus & Matrix</h3>
+              <h3 class="text-rose-400 font-semibold mb-2">Numerical Differentiation</h3>
               <ul class="text-sm text-slate-400 space-y-1 list-disc pl-4">
-                <li>Finite Difference Differentiation</li><li>Gauss-Jacobi Method</li><li>Gauss-Seidel Method</li>
+                <li>Forward Difference</li><li>Backward Difference</li><li>Central Difference</li>
               </ul>
             </div>
+
+            <div class="bg-slate-950 p-5 rounded-lg border border-slate-800">
+              <h3 class="text-emerald-400 font-semibold mb-2">Matrix Solvers</h3>
+              <ul class="text-sm text-slate-400 space-y-1 list-disc pl-4">
+                <li>Gauss-Jacobi Iteration</li><li>Gauss-Seidel Iteration</li>
+              </ul>
+            </div>
+
           </div>
         </div>
       </section>
@@ -140,10 +154,10 @@
           <div class="lg:col-span-4 bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col gap-4">
             <h2 class="text-sm font-semibold uppercase text-sky-400">Root Configuration</h2>
             <select id="rootMethod" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200">
-              <option value="bisection">1. Bisection Method</option>
-              <option value="falsi">2. Regula Falsi Method</option>
-              <option value="newton">3. Newton-Raphson Method</option>
-              <option value="secant">4. Secant Method</option>
+              <option value="bisection">Bisection Method</option>
+              <option value="falsi">Regula Falsi Method</option>
+              <option value="newton">Newton-Raphson Method</option>
+              <option value="secant">Secant Method</option>
             </select>
             <div><label class="block text-xs text-slate-400 mb-1">f(x) [JS Syntax]</label><input id="rootFunc" type="text" value="Math.pow(x, 2) - 4" class="mono w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-emerald-400"></div>
             <div class="grid grid-cols-2 gap-3">
@@ -168,11 +182,10 @@
           <div class="lg:col-span-4 bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col gap-4">
             <h2 class="text-sm font-semibold uppercase text-amber-400">Interpolation Config</h2>
             <select id="interpMethod" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200">
-              <option value="lagrange">5. Lagrange Interpolation</option>
-              <option value="forward">6. Newton Forward Difference</option>
-              <option value="backward">7. Newton Backward Difference</option>
-              <option value="divided">8. Newton Divided Difference</option>
-              <option value="linear">Linear Interpolation</option>
+              <option value="lagrange">Lagrange Interpolation</option>
+              <option value="forward">Newton Forward Difference</option>
+              <option value="backward">Newton Backward Difference</option>
+              <option value="divided">Newton Divided Difference</option>
             </select>
             <div><label class="block text-xs text-slate-400 mb-1">X Nodes (CSV)</label><input id="interpX" type="text" value="0, 1, 2, 4" class="mono w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-sky-300"></div>
             <div><label class="block text-xs text-slate-400 mb-1">Y Nodes (CSV)</label><input id="interpY" type="text" value="1, 1, 2, 5" class="mono w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-amber-300"></div>
@@ -195,7 +208,7 @@
           <div class="lg:col-span-4 bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col gap-4">
             <h2 class="text-sm font-semibold uppercase text-rose-400">Derivative Config</h2>
             <div class="bg-slate-950 p-3 rounded text-xs text-slate-400 border border-slate-800">
-              13. Finite Difference Differentiation
+              Finite Difference Differentiation
             </div>
             <div><label class="block text-xs text-slate-400 mb-1">X Coordinates (Equally Spaced)</label><input id="diffX" type="text" value="1, 2, 3, 4, 5" class="mono w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-sky-300"></div>
             <div><label class="block text-xs text-slate-400 mb-1">Y Coordinates</label><input id="diffY" type="text" value="1, 4, 9, 16, 25" class="mono w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-amber-300"></div>
@@ -218,10 +231,10 @@
           <div class="lg:col-span-4 bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col gap-4">
             <h2 class="text-sm font-semibold uppercase text-purple-400">Integration Config</h2>
             <select id="integMethod" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200">
-              <option value="trapezoidal">9. Trapezoidal Rule</option>
-              <option value="simpson13">10. Simpson's 1/3 Rule</option>
-              <option value="simpson38">11. Simpson's 3/8 Rule</option>
-              <option value="gaussleg">12. Gauss-Legendre Quadrature</option>
+              <option value="trapezoidal">Trapezoidal Rule</option>
+              <option value="simpson13">Simpson's 1/3 Rule</option>
+              <option value="simpson38">Simpson's 3/8 Rule</option>
+              <option value="gaussleg">Gauss-Legendre Quadrature</option>
             </select>
             <div><label class="block text-xs text-slate-400 mb-1">f(x) [JS Syntax]</label><input id="integFunc" type="text" value="Math.sin(x)" class="mono w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-emerald-400"></div>
             <div class="grid grid-cols-2 gap-3">
@@ -247,8 +260,8 @@
           <div class="lg:col-span-4 bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col gap-4">
             <h2 class="text-sm font-semibold uppercase text-emerald-400">Matrix Config</h2>
             <select id="matrixMethod" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-200">
-              <option value="gauss_jacobi">14. Gauss-Jacobi Method</option>
-              <option value="gauss_seidel">15. Gauss-Seidel Method</option>
+              <option value="gauss_jacobi">Gauss-Jacobi Method</option>
+              <option value="gauss_seidel">Gauss-Seidel Method</option>
             </select>
             <div>
               <label class="block text-xs text-slate-400 mb-1">Augmented Matrix [A | B] (CSV format)</label>
@@ -328,7 +341,7 @@
         } catch (e) { resultBox.innerHTML = `<span class="text-rose-500 font-bold">[Error] ${e.message}</span>`; }
     }
 
-    // 2. INTERPOLATION
+// 2. INTERPOLATION
     function runInterpolation() {
         const method = document.getElementById('interpMethod').value;
         const x = document.getElementById('interpX').value.split(',').map(n => parseFloat(n.trim()));
@@ -369,11 +382,6 @@
                 for(let j=1; j<n; j++) for(let i=0; i<n-j; i++) divDiff[i][j] = (divDiff[i+1][j-1] - divDiff[i][j-1]) / (x[i+j] - x[i]);
                 result = divDiff[0][0]; let xTerm = 1;
                 for(let i=1; i<n; i++) { xTerm *= (target - x[i-1]); result += xTerm * divDiff[0][i]; table.innerHTML += `<tr class="border-b border-slate-800 hover:bg-slate-800/40"><td class="px-3 py-2">Order ${i}</td><td class="px-3 py-2 text-slate-400">Diff: ${divDiff[0][i].toFixed(4)}</td><td class="px-3 py-2 text-sky-300">${result.toFixed(5)}</td></tr>`; }
-            } else if (method === 'linear') {
-                let i = 0; while (i < n - 1 && x[i+1] < target) i++;
-                if (i >= n-1) i = n-2;
-                result = y[i] + (y[i+1] - y[i]) * ((target - x[i]) / (x[i+1] - x[i]));
-                table.innerHTML += `<tr class="border-b border-slate-800 hover:bg-slate-800/40"><td class="px-3 py-2">Nodes</td><td class="px-3 py-2 text-slate-400">Used x=${x[i]}, x=${x[i+1]}</td><td class="px-3 py-2 text-sky-300">${result.toFixed(5)}</td></tr>`;
             }
             resultBox.innerHTML = `<span class="text-amber-400">Interpolated f(${target}):</span> ${result.toFixed(6)}`;
         } catch (e) { resultBox.innerHTML = `<span class="text-rose-500 font-bold">[Error] ${e.message}</span>`; }
