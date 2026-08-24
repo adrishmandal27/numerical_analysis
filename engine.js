@@ -398,3 +398,25 @@ function downloadCSV(csv, filename) {
     downloadLink.click();
     document.body.removeChild(downloadLink);
 }
+// Force hard refresh: Unregister Service Worker, clear cache, and reload
+function hardRefreshApp() {
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistrations().then((registrations) => {
+            for (let registration of registrations) {
+                registration.unregister();
+            }
+        });
+    }
+    
+    if ('caches' in window) {
+        caches.keys().then((names) => {
+            for (let name of names) {
+                caches.delete(name);
+            }
+        });
+    }
+
+    setTimeout(() => {
+        window.location.reload(true);
+    }, 500);
+}
