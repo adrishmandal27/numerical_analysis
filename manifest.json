@@ -1,0 +1,37 @@
+{
+  "name": "Numerical Analysis Toolkit",
+  "short_name": "NumToolkit",
+  "description": "Client-side numerical analysis and scientific computing engine.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "author": "Adrish Mandal",
+  "background_color": "#020617",
+  "theme_color": "#020617",
+  "icons": [
+    {
+      "src": "A.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "A.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "preview.png",
+      "sizes": "1918x937",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "preview.png",
+      "sizes": "1918x937",
+      "type": "image/png"
+    }
+  ]
+}

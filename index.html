@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="icon" type="image/png" href="A.png?v=2">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Fixes Mobile Scaling -->
     <title>Numerical Analysis Toolkit</title>
@@ -8,10 +9,15 @@
     
     <!-- External Libraries for Math Engine -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
+    <!-- External Libraries for Math Engine -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.js"></script> <!-- ADD THIS -->
     <!-- Custom Scrollbar & Fonts -->
     <!-- Custom UI Styles -->
     <link rel="stylesheet" href="style.css">
+    <!-- PWA Manifest & Theme -->
+    <meta name="theme-color" content="#020617">
+    <link rel="manifest" href="manifest.json">
 </head>
 
 <body class="red">
@@ -123,10 +129,28 @@
           </div>
           <div class="lg:col-span-8 bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col gap-4">
             <h2 class="text-sm font-semibold uppercase tracking-wider text-sky-400">Root Results</h2>
-            <div id="rootResultBox" class="bg-slate-950 border border-slate-800 p-4 rounded-lg text-sm mono text-slate-300">Awaiting execution...</div>
-            <div class="overflow-x-auto max-h-64 border border-slate-800 rounded-lg">
-              <table class="w-full text-left text-xs mono border-collapse"><tbody id="rootTable" class="divide-y divide-slate-800/50 text-slate-300"></tbody></table>
+            <!-- Export Button -->
+            <div class="flex justify-end -mt-10">
+                <button onclick="exportTableToCSV('rootTable', 'root_finding_data.csv')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 font-bold py-1.5 px-3 rounded text-xs transition">
+                    📥 Export CSV
+                </button>
             </div>
+            <!-- The Success/Error Message Box -->
+            <div id="rootResultBox" class="bg-slate-950 border border-slate-800 p-4 rounded-lg text-sm mono text-slate-300">Awaiting execution...</div>
+            <!--  NEW SIDE-BY-SIDE LAYOUT  -->
+            <div class="grid grid-cols-1 xl:grid-cols-2 gap-4 w-full"> 
+                <!-- Left Side: The p5.js Graph -->
+                <div id="graph-container" class="border border-slate-800 rounded-lg overflow-hidden w-full h-64 bg-slate-950 flex justify-center items-center shadow-inner">
+                    <span class="text-slate-600 text-xs">Graph will render here after execution</span>
+                </div>
+                <!-- Right Side: The Iteration Table -->
+                <div class="overflow-x-auto max-h-64 border border-slate-800 rounded-lg bg-slate-950">
+                  <table class="w-full text-left text-xs mono border-collapse">
+                      <tbody id="rootTable" class="divide-y divide-slate-800/50 text-slate-300"></tbody>
+                  </table>
+                </div>
+            </div>
+            <!-- ============================== -->
           </div>
         </div>
       </section>
@@ -149,6 +173,11 @@
           </div>
           <div class="lg:col-span-8 bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col gap-4">
             <h2 class="text-sm font-semibold uppercase tracking-wider text-amber-400">Interpolation Results</h2>
+            <div class="flex justify-end -mt-10">
+              <button onclick="exportTableToCSV('interpTable', 'interpolation_data.csv')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 font-bold py-1.5 px-3 rounded text-xs transition">
+                📥 Export CSV
+              </button>
+            </div>
             <div id="interpResultBox" class="bg-slate-950 border border-slate-800 p-4 rounded-lg text-sm mono text-slate-300">Awaiting execution...</div>
             <div class="overflow-x-auto max-h-64 border border-slate-800 rounded-lg">
               <table class="w-full text-left text-xs mono border-collapse"><tbody id="interpTable" class="divide-y divide-slate-800/50 text-slate-300"></tbody></table>
@@ -172,6 +201,11 @@
           </div>
           <div class="lg:col-span-8 bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col gap-5">
             <h2 class="text-sm font-semibold uppercase tracking-wider text-rose-400">Derivative Results</h2>
+            <div class="flex justify-end -mt-10">
+              <button onclick="exportTableToCSV('diffTable', 'differentiation_data.csv')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 font-bold py-1.5 px-3 rounded text-xs transition">
+                📥 Export CSV
+              </button>
+            </div>
             <div id="diffResultBox" class="bg-slate-950 border border-slate-800 p-4 rounded-lg text-sm mono text-slate-300 shadow-inner">Awaiting execution...</div>
             <div class="overflow-x-auto border border-slate-800 rounded-lg bg-slate-950/50">
               <table class="w-full text-left text-xs mono border-collapse" id="diffTable"></table>
@@ -201,6 +235,11 @@
           </div>
           <div class="lg:col-span-8 bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col gap-4">
             <h2 class="text-sm font-semibold uppercase tracking-wider text-purple-400">Integration Results</h2>
+            <div class="flex justify-end -mt-10">
+              <button onclick="exportTableToCSV('integTable', 'integration_data.csv')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 font-bold py-1.5 px-3 rounded text-xs transition">
+                📥 Export CSV
+              </button>
+            </div>
             <div id="integResultBox" class="bg-slate-950 border border-slate-800 p-4 rounded-lg text-sm mono text-slate-300">Awaiting execution...</div>
             <div class="overflow-x-auto max-h-64 border border-slate-800 rounded-lg">
               <table class="w-full text-left text-xs mono border-collapse"><tbody id="integTable" class="divide-y divide-slate-800/50 text-slate-300"></tbody></table>
@@ -228,6 +267,11 @@
           </div>
           <div class="lg:col-span-8 bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col gap-4">
             <h2 class="text-sm font-semibold uppercase tracking-wider text-emerald-400">Matrix Results</h2>
+            <div class="flex justify-end -mt-10">
+              <button onclick="exportTableToCSV('matrixTable', 'matrix_data.csv')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 font-bold py-1.5 px-3 rounded text-xs transition">
+                📥 Export CSV
+              </button>
+            </div>
             <div id="matrixResultBox" class="bg-slate-950 border border-slate-800 p-4 rounded-lg text-sm mono text-slate-300">Awaiting execution...</div>
             <div class="overflow-x-auto max-h-64 border border-slate-800 rounded-lg">
               <table class="w-full text-left text-xs mono border-collapse"><tbody id="matrixTable" class="divide-y divide-slate-800/50 text-slate-300"></tbody></table>
@@ -241,11 +285,26 @@
 
   <!-- MATH ENGINE JS SCRIPT -->
   <script src="engine.js"></script>
-
+  <script src="grapher.js"></script>
   <!-- Footer -->
   <footer class="bye">
     <h3><br>Designed & Developed by <a href="mailto:adrishmandal27@gmail.com" class="color">Adrish Mandal</a><br><br></h3>
   </footer>
-
+  <script>
+  // Disable Right-Click Menu
+  document.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+  });
+</script> 
+<!-- Service Worker Registration -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js')
+        .then((reg) => console.log('Service Worker registered:', reg.scope))
+        .catch((err) => console.error('Service Worker registration failed:', err));
+    });
+  }
+</script>
 </body>
 </html>

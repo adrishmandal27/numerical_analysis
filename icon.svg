@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Deep Slate Background -->
+  <rect width="512" height="512" rx="112" fill="#020617" />
+  
+  <!-- Cartesian Grid -->
+  <path d="M 64 256 L 448 256" stroke="#1e293b" stroke-width="8" stroke-linecap="round" />
+  <path d="M 256 64 L 256 448" stroke="#1e293b" stroke-width="8" stroke-linecap="round" />
+  
+  <!-- Smooth Mathematical Function Curve (Sky Blue) -->
+  <path d="M 100 380 C 200 380, 312 132, 412 132" fill="none" stroke="#38bdf8" stroke-width="32" stroke-linecap="round" />
+  
+  <!-- Interpolation Nodes (Rose, Amber, Emerald) -->
+  <circle cx="100" cy="380" r="28" fill="#f43f5e" /> 
+  <circle cx="256" cy="256" r="28" fill="#fbbf24" /> 
+  <circle cx="412" cy="132" r="28" fill="#34d399" /> 
+</svg>
