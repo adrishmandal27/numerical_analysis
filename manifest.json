@@ -1,24 +1,25 @@
 {
   "name": "Numerical Analysis Toolkit",
-  "short_name": "NumToolkit",
-  "description": "Client-side numerical analysis and scientific computing engine.",
+  "short_name": "NumEngine",
+  "description": "Offline computational engine for classical numerical methods.",
   "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
-  "author": "Adrish Mandal",
   "background_color": "#020617",
   "theme_color": "#020617",
+  "orientation": "portrait",
   "icons": [
     {
-      "src": "A.png",
-      "sizes": "1024x1024",
+      "src": "icon-192.png",
+      "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "A.png",
-      "sizes": "1024x1024",
+      "src": "icon-512.png",
+      "sizes": "512x512",
       "type": "image/png",
-      "purpose": "maskable"
+      "purpose": "any"
     }
   ],
   "screenshots": [
