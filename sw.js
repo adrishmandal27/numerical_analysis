@@ -1,50 +1,48 @@
-const CACHE_NAME = 'numerical-toolkit-v1';
+const CACHE_NAME = 'num-engine-v3';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
   './style.css',
   './engine.js',
   './grapher.js',
-  './manifest.json',
-  './A.png',
-  'https://cdn.tailwindcss.com',
-  'https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.js'
+  './A.png'
 ];
 
-// Install Event: Cache all core assets
+// Install Event: Cache essential files
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(ASSETS_TO_CACHE);
-    }).then(() => self.skipWaiting())
+    })
   );
+  self.skipWaiting(); // Force the waiting service worker to become the active service worker
 });
 
-// Activate Event: Clear outdated caches
+// Activate Event: Clean up old caches
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((keys) => {
+    caches.keys().then((cacheNames) => {
       return Promise.all(
-        keys.map((key) => {
-          if (key !== CACHE_NAME) {
-            return caches.delete(key);
+        cacheNames.map((cache) => {
+          if (cache !== CACHE_NAME) {
+            return caches.delete(cache);
           }
         })
       );
-    }).then(() => self.clients.claim())
+    })
   );
+  self.clients.claim();
 });
 
-// Fetch Event: Serve cached assets when offline, fall back to network
+// Fetch Event: THIS IS MANDATORY FOR CHROME INSTALLABILITY
 self.addEventListener('fetch', (event) => {
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      return cachedResponse || fetch(event.request).catch(() => {
-        // Fallback for document navigation if offline
-        if (event.request.mode === 'navigate') {
-          return caches.match('./index.html');
-        }
-      });
+    caches.match(event.request).then((response) => {
+      // Return the cached version if found, otherwise fetch from the network
+      return response || fetch(event.request);
+    }).catch(() => {
+      // Fallback if both cache and network fail
+      return caches.match('./index.html');
     })
   );
 });
