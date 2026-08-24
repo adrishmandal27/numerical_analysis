@@ -1,24 +1,32 @@
 // Menu Tab Switching
 function switchTab(tabId) {
+    // 1. Switch the main content panels
     document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('tab-active'));
     document.getElementById(tabId).classList.add('tab-active');
     
-    // Save the active tab to the browser's local storage
+    // 2. Remove highlights from all menu items
+    document.querySelectorAll('.nav-link').forEach(el => {
+        el.classList.remove('bg-slate-800', 'text-white', 'border-l-4', 'border-sky-400');
+        el.classList.add('text-slate-400'); // Safely revert to base color class
+    });
+    
+    // 3. Add vibrant highlight to the clicked menu item
+    const activeNav = document.getElementById('nav-' + tabId);
+    if (activeNav) {
+        activeNav.classList.remove('text-slate-400'); // Remove faded color
+        activeNav.classList.add('bg-slate-800', 'text-white', 'border-l-4', 'border-sky-400');
+    }
+    
+    // 4. Save the active tab to local storage
     localStorage.setItem('activeNumericalTab', tabId);
     
-    // Automatically close sidepanel when a tool is selected (if you have a closeNav function)
-    if (typeof closeNav === 'function') closeNav(); 
-}
-
-// Restore the active tab when the page reloads
+    // 5. Automatically close sidepanel when a tool is selected
+    if (typeof closeNav === 'function' && window.innerWidth < 1024) closeNav(); 
+}// Restore the active tab when the page reloads
 document.addEventListener('DOMContentLoaded', () => {
-    // Check memory for a saved tab. If memory is empty, default to 'home'
     const savedTab = localStorage.getItem('activeNumericalTab') || 'home';
-    
-    // Check if the element actually exists before trying to switch to it
     if (document.getElementById(savedTab)) {
-        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('tab-active'));
-        document.getElementById(savedTab).classList.add('tab-active');
+        switchTab(savedTab); // Call the function to ensure the highlight applies on refresh!
     }
 });
 
@@ -398,6 +406,7 @@ function downloadCSV(csv, filename) {
     downloadLink.click();
     document.body.removeChild(downloadLink);
 }
+
 // Force hard refresh: Unregister Service Worker, clear cache, and reload
 function hardRefreshApp() {
     if ('serviceWorker' in navigator) {

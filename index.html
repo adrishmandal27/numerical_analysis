@@ -1,20 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="icon" type="image/png" href="A.png?v=2">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Fixes Mobile Scaling -->
     <title>Numerical Analysis Toolkit</title>
-    <link rel="icon" href="A.png" type="image/icon type">
+    <link rel="icon" type="image/png" href="A.png?v=3">
     
     <!-- External Libraries for Math Engine -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- External Libraries for Math Engine -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.js"></script> <!-- ADD THIS -->
-    <!-- Custom Scrollbar & Fonts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.js"></script>
+    
     <!-- Custom UI Styles -->
     <link rel="stylesheet" href="style.css">
+    
     <!-- PWA Manifest & Theme -->
     <meta name="theme-color" content="#020617">
     <link rel="manifest" href="manifest.json">
@@ -45,17 +43,20 @@
       
       <!-- Numerical Engine Tabs -->
       <div style="padding-left: 25px; font-size: 16px; color: #82E0AA; margin-top: 10px; margin-bottom: 5px; font-weight: bold; text-transform: uppercase;">Numerical Engine</div>
-      <a href="javascript:void(0)" onclick="switchTab('home')" style="font-size: 20px;">📊 Dashboard</a>
-      <a href="javascript:void(0)" onclick="switchTab('roots')" style="font-size: 20px;">📈 Root Finding</a>
-      <a href="javascript:void(0)" onclick="switchTab('interp')" style="font-size: 20px;">🎯 Interpolation</a>
-      <a href="javascript:void(0)" onclick="switchTab('diff')" style="font-size: 20px;">📐 Differentiation</a>
-      <a href="javascript:void(0)" onclick="switchTab('integ')" style="font-size: 20px;">📉 Integration</a>
-      <a href="javascript:void(0)" onclick="switchTab('matrix')" style="font-size: 20px;">🧮 Matrix Solvers</a>
-      <div class="mt-auto pt-6 border-t border-slate-800">
+      <a href="javascript:void(0)" id="nav-home" class="nav-link text-slate-400 hover:bg-purple-900/40 hover:text-purple-300" onclick="switchTab('home')" style="font-size: 20px; display: block; padding: 10px 25px; transition: 0.2s;">📊 Dashboard</a>
+      <a href="javascript:void(0)" id="nav-roots" class="nav-link text-slate-400 hover:bg-purple-900/40 hover:text-purple-300" onclick="switchTab('roots')" style="font-size: 20px; display: block; padding: 10px 25px; transition: 0.2s;">📈 Root Finding</a>
+      <a href="javascript:void(0)" id="nav-interp" class="nav-link text-slate-400 hover:bg-purple-900/40 hover:text-purple-300" onclick="switchTab('interp')" style="font-size: 20px; display: block; padding: 10px 25px; transition: 0.2s;">🎯 Interpolation</a>
+      <a href="javascript:void(0)" id="nav-diff" class="nav-link text-slate-400 hover:bg-purple-900/40 hover:text-purple-300" onclick="switchTab('diff')" style="font-size: 20px; display: block; padding: 10px 25px; transition: 0.2s;">📐 Differentiation</a>
+      <a href="javascript:void(0)" id="nav-integ" class="nav-link text-slate-400 hover:bg-purple-900/40 hover:text-purple-300" onclick="switchTab('integ')" style="font-size: 20px; display: block; padding: 10px 25px; transition: 0.2s;">📉 Integration</a>
+      <a href="javascript:void(0)" id="nav-matrix" class="nav-link text-slate-400 hover:bg-purple-900/40 hover:text-purple-300" onclick="switchTab('matrix')" style="font-size: 20px; display: block; padding: 10px 25px; transition: 0.2s;">🧮 Matrix Solvers</a>
+      <button id="nav-syntaxTab" class="nav-link text-slate-400 hover:bg-purple-900/40 hover:text-purple-300 w-full text-left transition flex items-center gap-3" onclick="switchTab('syntaxTab')" style="font-size: 20px; background: none; border: none; cursor: pointer; display: block; padding: 10px 25px; transition: 0.2s;">
+        <span>📖 JS Syntax Guide</span>
+      </button>
+      <div style="padding: 15px 25px;">
         <button onclick="hardRefreshApp()" class="w-full bg-slate-900 hover:bg-slate-800 border border-slate-800 text-amber-400 font-bold py-2 px-3 rounded text-xs transition flex items-center justify-center gap-1.5 shadow-sm">
             🔄 Hard Refresh & Clear Cache
         </button>
-    </div>
+      </div>
     </div>
   </div>
   <hr><hr>
@@ -71,7 +72,6 @@
           <h2 class="text-2xl font-bold text-slate-100 mb-4">Welcome to the Numerical Engine</h2>
           <p class="text-slate-400 mb-8 leading-relaxed">Open the <strong>☰ Menu</strong> at the top left to switch between algorithms. This interactive engine supports 15 classical numerical methods.</p>
           
-          <!-- Responsive Grid: 1 col on mobile, 2 on tablet, 3 on large screens -->
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             
             <div class="bg-slate-950 p-5 rounded-lg border border-slate-800">
@@ -133,28 +133,22 @@
           </div>
           <div class="lg:col-span-8 bg-slate-900 border border-slate-800 rounded-xl p-5 flex flex-col gap-4">
             <h2 class="text-sm font-semibold uppercase tracking-wider text-sky-400">Root Results</h2>
-            <!-- Export Button -->
             <div class="flex justify-end -mt-10">
                 <button onclick="exportTableToCSV('rootTable', 'root_finding_data.csv')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 font-bold py-1.5 px-3 rounded text-xs transition">
                     📥 Export CSV
                 </button>
             </div>
-            <!-- The Success/Error Message Box -->
             <div id="rootResultBox" class="bg-slate-950 border border-slate-800 p-4 rounded-lg text-sm mono text-slate-300">Awaiting execution...</div>
-            <!--  NEW SIDE-BY-SIDE LAYOUT  -->
             <div class="grid grid-cols-1 xl:grid-cols-2 gap-4 w-full"> 
-                <!-- Left Side: The p5.js Graph -->
                 <div id="graph-container" class="border border-slate-800 rounded-lg overflow-hidden w-full h-64 bg-slate-950 flex justify-center items-center shadow-inner">
                     <span class="text-slate-600 text-xs">Graph will render here after execution</span>
                 </div>
-                <!-- Right Side: The Iteration Table -->
                 <div class="overflow-x-auto max-h-64 border border-slate-800 rounded-lg bg-slate-950">
                   <table class="w-full text-left text-xs mono border-collapse">
                       <tbody id="rootTable" class="divide-y divide-slate-800/50 text-slate-300"></tbody>
                   </table>
                 </div>
             </div>
-            <!-- ============================== -->
           </div>
         </div>
       </section>
@@ -283,32 +277,89 @@
           </div>
         </div>
       </section>
+
+      <!-- TAB 7: SYNTAX GUIDE -->
+      <section id="syntaxTab" class="tab-content flex-col">
+        <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-xl">
+            <h2 class="text-xl font-bold text-white mb-2">JavaScript Mathematical Syntax Guide</h2>
+            <p class="text-slate-400 text-sm mb-6">Use these standard formats when typing expressions into the f(x) input fields across Root Finding, Integration, and Graphing modules.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-slate-950 border border-slate-800/80 p-4 rounded-lg">
+                    <h3 class="text-amber-400 font-semibold mb-2">Basic Arithmetic & Powers</h3>
+                    <ul class="text-xs text-slate-300 space-y-2 font-mono">
+                        <li><strong class="text-white">Addition:</strong> x + 3</li>
+                        <li><strong class="text-white">Subtraction:</strong> x - 5</li>
+                        <li><strong class="text-white">Multiplication:</strong> 3*x (explicit '*' required)</li>
+                        <li><strong class="text-white">Division:</strong> x / 2</li>
+                        <li><strong class="text-white">Exponents:</strong>Math.pow(x, n) where n is the exponent</li>
+                    </ul>
+                </div>
+
+                <div class="bg-slate-950 border border-slate-800/80 p-4 rounded-lg">
+                    <h3 class="text-sky-400 font-semibold mb-2">Trigonometric Functions</h3>
+                    <ul class="text-xs text-slate-300 space-y-2 font-mono">
+                        <li><strong class="text-white">Sine:</strong> Math.sin(x)</li>
+                        <li><strong class="text-white">Cosine:</strong> Math.cos(x)</li>
+                        <li><strong class="text-white">Tangent:</strong> Math.tan(x)</li>
+                    </ul>
+                </div>
+
+                <div class="bg-slate-950 border border-slate-800/80 p-4 rounded-lg">
+                    <h3 class="text-emerald-400 font-semibold mb-2">Advanced Math Functions</h3>
+                    <ul class="text-xs text-slate-300 space-y-2 font-mono">
+                        <li><strong class="text-white">Square Root:</strong> Math.sqrt(x)</li>
+                        <li><strong class="text-white">Exponential:</strong> Math.exp(x)  *(e^x)*</li>
+                        <li><strong class="text-white">Natural Log:</strong> Math.log(x)  *(ln x)*</li>
+                        <li><strong class="text-white">Absolute Value:</strong> Math.abs(x)</li>
+                    </ul>
+                </div>
+
+                <div class="bg-slate-950 border border-slate-800/80 p-4 rounded-lg">
+                    <h3 class="text-purple-400 font-semibold mb-2">Mathematical Constants</h3>
+                    <ul class="text-xs text-slate-300 space-y-2 font-mono">
+                        <li><strong class="text-white">Pi (π):</strong> Math.PI  *(e.g., Math.PI / 2)*</li>
+                        <li><strong class="text-white">Euler's Number (e):</strong> Math.E</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="mt-6 p-4 bg-slate-950 border border-amber-500/20 rounded-lg text-xs text-slate-300">
+                <span class="text-amber-400 font-bold">💡 Example Function:</span> 
+                <code class="text-sky-300 ml-2 font-mono">Math.sin(x) + Math.pow(x, 2) - 4*x + Math.PI</code>
+            </div>
+        </div>
+      </section>
+      
     </main>
 
   </div> <!-- End .qu Wrapper -->
 
-  <!-- MATH ENGINE JS SCRIPT -->
+  <!-- MATH ENGINE JS SCRIPTS -->
   <script src="engine.js"></script>
   <script src="grapher.js"></script>
+
   <!-- Footer -->
   <footer class="bye">
     <h3><br>Designed & Developed by <a href="mailto:adrishmandal27@gmail.com" class="color">Adrish Mandal</a><br><br></h3>
   </footer>
+
   <script>
-  // Disable Right-Click Menu
-  document.addEventListener('contextmenu', function(e) {
-      e.preventDefault();
-  });
-</script> 
-<!-- Service Worker Registration -->
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js')
-        .then((reg) => console.log('Service Worker registered:', reg.scope))
-        .catch((err) => console.error('Service Worker registration failed:', err));
+    // Disable Right-Click Menu
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
     });
-  }
-</script>
+  </script> 
+
+  <!-- Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then((reg) => console.log('Service Worker registered:', reg.scope))
+          .catch((err) => console.error('Service Worker registration failed:', err));
+      });
+    }
+  </script>
 </body>
 </html>

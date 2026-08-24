@@ -1,16 +1,53 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
-  <!-- Deep Slate Background -->
-  <rect width="512" height="512" rx="112" fill="#020617" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <defs>
+    <!-- Dark Slate Background matching your portal's bg-slate-950 -->
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#020617" />
+      <stop offset="100%" stop-color="#090e17" />
+    </linearGradient>
+
+    <!-- Matrix Hexagon Gradient (Purple to Sky Blue) -->
+    <linearGradient id="hexGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#c084fc" />
+      <stop offset="100%" stop-color="#38bdf8" />
+    </linearGradient>
+
+    <!-- Function Wave Gradient (Rose to Amber) -->
+    <linearGradient id="waveGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#fb7185" />
+      <stop offset="100%" stop-color="#fbbf24" />
+    </linearGradient>
+
+    <!-- Neon Glow Filter -->
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="20" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Base App Icon Background (Squircle) -->
+  <rect width="1024" height="1024" rx="225" fill="url(#bg)" />
+
+  <!-- Inner Structural Grid Lines -->
+  <polygon points="512,280 714,396 714,628 512,744 310,628 310,396" fill="none" stroke="#1e293b" stroke-width="12" />
+  <line x1="225" y1="346" x2="799" y2="678" stroke="#1e293b" stroke-width="12" />
+  <line x1="225" y1="678" x2="799" y2="346" stroke="#1e293b" stroke-width="12" />
+  <line x1="512" y1="180" x2="512" y2="844" stroke="#1e293b" stroke-width="12" />
+
+  <!-- Glowing Hexagon (Matrices) -->
+  <polygon points="512,180 799,346 799,678 512,844 225,678 225,346" fill="none" stroke="url(#hexGrad)" stroke-width="48" stroke-linejoin="round" filter="url(#glow)" />
+
+  <!-- Diagonal Secant Line (Differentiation) -->
+  <line x1="180" y1="844" x2="844" y2="180" stroke="#34d399" stroke-width="36" stroke-linecap="round" filter="url(#glow)" />
+
+  <!-- Smooth Function Wave (Interpolation/Integration) -->
+  <path d="M 150 512 C 300 150, 400 150, 512 512 C 624 874, 724 874, 874 512" fill="none" stroke="url(#waveGrad)" stroke-width="48" stroke-linecap="round" filter="url(#glow)" />
+
+  <!-- Central Target Node (Root Finding) -->
+  <circle cx="512" cy="512" r="50" fill="#ffffff" filter="url(#glow)" />
+  <circle cx="512" cy="512" r="25" fill="#020617" />
   
-  <!-- Cartesian Grid -->
-  <path d="M 64 256 L 448 256" stroke="#1e293b" stroke-width="8" stroke-linecap="round" />
-  <path d="M 256 64 L 256 448" stroke="#1e293b" stroke-width="8" stroke-linecap="round" />
-  
-  <!-- Smooth Mathematical Function Curve (Sky Blue) -->
-  <path d="M 100 380 C 200 380, 312 132, 412 132" fill="none" stroke="#38bdf8" stroke-width="32" stroke-linecap="round" />
-  
-  <!-- Interpolation Nodes (Rose, Amber, Emerald) -->
-  <circle cx="100" cy="380" r="28" fill="#f43f5e" /> 
-  <circle cx="256" cy="256" r="28" fill="#fbbf24" /> 
-  <circle cx="412" cy="132" r="28" fill="#34d399" /> 
+  <!-- Outer Orbiting Nodes -->
+  <circle cx="346" cy="678" r="25" fill="#38bdf8" />
+  <circle cx="678" cy="346" r="25" fill="#fbbf24" />
 </svg>
