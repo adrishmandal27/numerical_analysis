@@ -4,7 +4,7 @@
 
 ![Numerical Analysis Web Portal Preview](preview.png)
 
-A high-performance computational suite implementing 15 classical numerical methods. Originally built as a modular Java library and CLI, the project now features a complete, interactive **Web-Based Portal** powered by a JavaScript math engine and a custom-designed user interface.
+A high-performance computational suite implementing classical numerical methods. Originally built as a modular Java library and CLI, the project features a complete, interactive **Web-Based Portal** powered by a secure JavaScript math engine, p5.js graphing, and offline PWA support.
 
 ---
 
@@ -36,37 +36,39 @@ A high-performance computational suite implementing 15 classical numerical metho
 
 ---
 
-## 🎨 Web Portal Features
-* **Custom User Interface:** Features a deep purple/gradient aesthetic with a responsive, sliding sidebar navigation system.
-* **Interactive Computations:** Instantly calculates and generates dynamic HTML tables for iteration logs, difference tables, and matrix solver steps.
-* **Client-Side Execution:** The entire mathematical engine runs locally in the browser via JavaScript, requiring no backend server.
-* **Portal Integration:** Includes custom-designed pages for User Registration, Notice Boards, Test Dates, and a Lock Screen.
+## 🎨 Web Portal & PWA Features
+* **Interactive p5.js Graphing:** Real-time Cartesian plane rendering with plotted function curves and root visualization.
+* **Progressive Web App (PWA):** Fully installable on desktop and mobile devices with offline capability via a custom Service Worker (`sw.js`).
+* **Algebraic Polynomial Expander:** Automatically formats interpolation results into standard polynomial form ($F(x) = ax^n + \dots$).
+* **Data Exporting:** Zero-latency CSV data export functionality directly from algorithm iteration tables.
+* **State Persistence:** Remembers active tabs using `localStorage` to prevent data loss on accidental page refreshes.
+* **Security Hardening:** Built-in Regex input sanitization to block code injection and XSS attempts.
 
 ---
 
 ## 🏗 Project Structure
 
 ```text
-numerical-analysis/
-├── Web_Portal/
-│   ├── index.html            # Main Math Engine & Dashboard
-│   ├── HomeB.html
-│   ├── RegisterB.html
-│   ├── PracticeB.html
-│   ├── LockB.html
-│   ├── NoticeB.html
-│   └── (Additional UI image assets)
-├── Java_CLI/
-│   ├── pom.xml
-│   ├── numerical_analysis-main.jar
-│   └── src/
-│       └── main/
-│           └── java/
-│               └── com/
-│                   └── numerical/
-│                       ├── Main.java
-│                       ├── Root_Finding/
-│                       ├── Interpolation/
-│                       ├── Numerical_Integration/
-│                       ├── Numerical_Differentiation/
-│                       └── Matrix/
+numerical_analysis/
+├── .github/
+│   └── workflows/
+│       └── maven-build.yml       # Automated GitHub Actions CI/CD Pipeline
+├── src/                          # Java Backend & CLI Library
+│   └── main/
+│       └── java/
+│           └── com/
+│               └── numerical/
+│                   ├── Main.java
+│                   ├── Root_Finding/
+│                   ├── Interpolation/
+│                   ├── Numerical_Integration/
+│                   ├── Numerical_Differentiation/
+│                   └── Matrix/
+├── index.html                    # Main Math Engine & Dashboard
+├── engine.js                     # Core Numerical Algorithms & Security Layer
+├── grapher.js                    # p5.js Cartesian Graphing Engine
+├── style.css                     # Custom UI Styles & Tailwind Configuration
+├── manifest.json                 # PWA Configuration & Metadata
+├── sw.js                         # Offline Caching Service Worker
+├── pom.xml                       # Maven Build Configuration
+└── README.md
