@@ -1,5 +1,4 @@
 // Menu Tab Switching
-// Menu Tab Switching
 function switchTab(tabId) {
     document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('tab-active'));
     document.getElementById(tabId).classList.add('tab-active');
@@ -7,7 +6,8 @@ function switchTab(tabId) {
     // Save the active tab to the browser's local storage
     localStorage.setItem('activeNumericalTab', tabId);
     
-    closeNav(); // Automatically close sidepanel when a tool is selected
+    // Automatically close sidepanel when a tool is selected (if you have a closeNav function)
+    if (typeof closeNav === 'function') closeNav(); 
 }
 
 // Restore the active tab when the page reloads
@@ -32,10 +32,10 @@ function runRootFinding() {
     const table = document.getElementById('rootTable');
 
     try {
-        // SECURITY PATCH: Prevent Code Injection (XSS)
+        // 🛡️ SECURITY PATCH: Prevent Code Injection (XSS)
         const safeRegex = /^([0-9x\+\-\*\/\(\)\.,]|Math\.(sin|cos|tan|pow|sqrt|exp|log|abs|PI|E))+$/;
         if (!safeRegex.test(fStr.replace(/\s+/g, ''))) {
-            throw new Error("Security Alert: Invalid input. Only mathematical functions and 'x' are allowed.");
+            throw new Error("Security Alert: XSS attempt blocked. Only mathematical functions are allowed.");
         }
 
         const f = new Function('x', 'return ' + fStr);
@@ -76,7 +76,7 @@ function runRootFinding() {
         resultBox.innerHTML = `<span class="text-emerald-400">Root Found:</span> ${c.toFixed(6)} <span class="text-slate-500 text-xs ml-2">(${iter+1} iterations)</span>`;
         
         // 📥 TRIGGER THE P5.JS GRAPH HERE 
-        renderGraph(fStr, c);
+        if (typeof renderGraph === 'function') renderGraph(fStr, c);
         
     } catch (e) { 
         resultBox.innerHTML = `<span class="text-rose-500 font-bold">🚨 [Error] ${e.message}</span>`; 
@@ -95,7 +95,7 @@ function runInterpolation() {
     // Custom Algebraic Expander: Multiplies out (x-r1)(x-r2)... and groups like terms
     function getExpandedPolynomial(xArr, yArr) {
         let n = xArr.length;
-        let finalPoly = new Array(n).fill(0); // [constant, x, x^2, x^3...]
+        let finalPoly = new Array(n).fill(0);
         
         for (let i = 0; i < n; i++) {
             let term = [1];
@@ -104,7 +104,6 @@ function runInterpolation() {
                 if (i !== j) {
                     let root = xArr[j];
                     let newTerm = new Array(term.length + 1).fill(0);
-                    // Multiply current polynomial term by (x - root)
                     for (let k = 0; k < term.length; k++) {
                         newTerm[k] -= root * term[k];
                         newTerm[k+1] += term[k];
@@ -115,15 +114,14 @@ function runInterpolation() {
             }
             let scalar = yArr[i] / denom;
             for (let k = 0; k < term.length; k++) {
-                finalPoly[k] += term[k] * scalar; // Add to final coefficients
+                finalPoly[k] += term[k] * scalar; 
             }
         }
 
-        // Format the coefficient array into a clean string: ax^3 + bx^2 + cx + d
         let eqStr = "";
         for (let k = n - 1; k >= 0; k--) {
             let coef = finalPoly[k];
-            if (Math.abs(coef) < 1e-7) continue; // Skip terms that are essentially 0
+            if (Math.abs(coef) < 1e-7) continue; 
             
             let absCoef = Math.abs(coef).toFixed(4);
             let termStr = "";
@@ -131,10 +129,7 @@ function runInterpolation() {
             if (k > 1) termStr = "x^" + k;
             else if (k === 1) termStr = "x";
             
-            // Clean up formatting (don't write 1.0000x^2, just write x^2)
-            if (absCoef === "1.0000" && k > 0) {
-                // leave termStr as just 'x' or 'x^2'
-            } else {
+            if (absCoef !== "1.0000" || k === 0) {
                 termStr = absCoef + termStr;
             }
 
@@ -195,10 +190,8 @@ function runInterpolation() {
             }
         }
         
-        // Construct the final standard polynomial string F(x)
         let standardEquation = getExpandedPolynomial(x, y);
         
-        // Inject both the final answer and the built polynomial equation into the UI
         resultBox.innerHTML = `
             <div class="mb-2"><span class="text-amber-400">Interpolated f(${target}):</span> <span class="font-bold text-white">${result.toFixed(6)}</span></div>
             <div class="text-xs text-slate-300 break-words mt-2 border-t border-slate-800 pt-3 font-mono leading-relaxed">
@@ -260,50 +253,83 @@ function runDifferentiation() {
 
 // 4. INTEGRATION
 function runIntegration() {
-    const method = document.getElementById('integMethod').value, fStr = document.getElementById('integFunc').value;
-    const a = parseFloat(document.getElementById('integA').value), b = parseFloat(document.getElementById('integB').value);
-    let n = parseInt(document.getElementById('integN').value);
-    const resultBox = document.getElementById('integResultBox'), table = document.getElementById('integTable');
+    const method = document.getElementById('integMethod').value;
+    const fStr = document.getElementById('integFunc').value;
+    const a = parseFloat(document.getElementById('integA').value);
+    const b = parseFloat(document.getElementById('integB').value);
+    const n = parseInt(document.getElementById('integN').value);
+    const resultBox = document.getElementById('integResultBox');
+    const table = document.getElementById('integTable');
 
     try {
-        // SECURITY PATCH: Prevent Code Injection (XSS)
+        // 🛡️ SECURITY PATCH: Prevent Code Injection (XSS)
         const safeRegex = /^([0-9x\+\-\*\/\(\)\.,]|Math\.(sin|cos|tan|pow|sqrt|exp|log|abs|PI|E))+$/;
         if (!safeRegex.test(fStr.replace(/\s+/g, ''))) {
-            throw new Error("Security Alert: Invalid input. Only mathematical functions and 'x' are allowed.");
+            throw new Error("Security Alert: XSS attempt blocked. Only mathematical functions are allowed.");
         }
-
         if (n <= 0 || isNaN(n)) throw new Error("Subintervals (n) must be a positive integer.");
+
         const f = new Function('x', 'return ' + fStr);
-        let result = 0, h = (b - a) / n;
-        table.innerHTML = `<tr class="bg-slate-900/80"><th class="px-3 py-2 text-white">Step (i)</th><th class="px-3 py-2 text-white">x_i</th><th class="px-3 py-2 text-white">f(x_i)</th><th class="px-3 py-2 text-white">Weight</th></tr>`;
-        
+        table.innerHTML = `<tr class="bg-slate-900/80"><th class="px-3 py-2 text-white">i</th><th class="px-3 py-2 text-white">x_i</th><th class="px-3 py-2 text-white">f(x_i)</th><th class="px-3 py-2 text-white">Weight</th></tr>`;
+
+        let h = (b - a) / n;
+        let result = 0;
+
         if (method === 'trapezoidal') {
-            result = f(a) + f(b); table.innerHTML += `<tr class="border-b border-slate-800 hover:bg-slate-800/40"><td class="px-3 py-2">0</td><td class="px-3 py-2">${a.toFixed(4)}</td><td class="px-3 py-2">${f(a).toFixed(4)}</td><td class="px-3 py-2">1</td></tr>`;
-            for (let i = 1; i < n; i++) { let x = a+i*h, fx = f(x); result += 2*fx; table.innerHTML += `<tr class="border-b border-slate-800 hover:bg-slate-800/40"><td class="px-3 py-2">${i}</td><td class="px-3 py-2">${x.toFixed(4)}</td><td class="px-3 py-2 text-purple-300">${fx.toFixed(4)}</td><td class="px-3 py-2">2</td></tr>`; }
-            table.innerHTML += `<tr class="border-b border-slate-800 hover:bg-slate-800/40"><td class="px-3 py-2">${n}</td><td class="px-3 py-2">${b.toFixed(4)}</td><td class="px-3 py-2">${f(b).toFixed(4)}</td><td class="px-3 py-2">1</td></tr>`;
+            for (let i = 0; i <= n; i++) {
+                let xi = a + i * h;
+                let fi = f(xi);
+                let weight = (i === 0 || i === n) ? 1 : 2;
+                result += weight * fi;
+                table.innerHTML += `<tr class="border-b border-slate-800 hover:bg-slate-800/40"><td class="px-3 py-2">${i}</td><td class="px-3 py-2 text-amber-300">${xi.toFixed(4)}</td><td class="px-3 py-2">${fi.toFixed(6)}</td><td class="px-3 py-2">× ${weight}</td></tr>`;
+            }
             result *= (h / 2);
+            
         } else if (method === 'simpson13') {
-            if (n % 2 !== 0) n += 1; h = (b - a) / n; result = f(a) + f(b);
-            table.innerHTML += `<tr class="border-b border-slate-800 hover:bg-slate-800/40"><td class="px-3 py-2">0</td><td class="px-3 py-2">${a.toFixed(4)}</td><td class="px-3 py-2">${f(a).toFixed(4)}</td><td class="px-3 py-2">1</td></tr>`;
-            for (let i = 1; i < n; i++) { let x = a+i*h, w = (i%2===0)?2:4; result += w*f(x); table.innerHTML += `<tr class="border-b border-slate-800 hover:bg-slate-800/40"><td class="px-3 py-2">${i}</td><td class="px-3 py-2">${x.toFixed(4)}</td><td class="px-3 py-2 text-purple-300">${f(x).toFixed(4)}</td><td class="px-3 py-2">${w}</td></tr>`; }
-            table.innerHTML += `<tr class="border-b border-slate-800 hover:bg-slate-800/40"><td class="px-3 py-2">${n}</td><td class="px-3 py-2">${b.toFixed(4)}</td><td class="px-3 py-2">${f(b).toFixed(4)}</td><td class="px-3 py-2">1</td></tr>`;
+            if (n % 2 !== 0) throw new Error("Simpson's 1/3 rule requires an EVEN number of intervals (n).");
+            for (let i = 0; i <= n; i++) {
+                let xi = a + i * h;
+                let fi = f(xi);
+                let weight = (i === 0 || i === n) ? 1 : (i % 2 === 0 ? 2 : 4);
+                result += weight * fi;
+                table.innerHTML += `<tr class="border-b border-slate-800 hover:bg-slate-800/40"><td class="px-3 py-2">${i}</td><td class="px-3 py-2 text-amber-300">${xi.toFixed(4)}</td><td class="px-3 py-2">${fi.toFixed(6)}</td><td class="px-3 py-2">× ${weight}</td></tr>`;
+            }
             result *= (h / 3);
+            
         } else if (method === 'simpson38') {
-            if (n % 3 !== 0) n += (3 - (n % 3)); h = (b - a) / n; result = f(a) + f(b);
-            table.innerHTML += `<tr class="border-b border-slate-800 hover:bg-slate-800/40"><td class="px-3 py-2">0</td><td class="px-3 py-2">${a.toFixed(4)}</td><td class="px-3 py-2">${f(a).toFixed(4)}</td><td class="px-3 py-2">1</td></tr>`;
-            for (let i = 1; i < n; i++) { let x = a+i*h, w = (i%3===0)?2:3; result += w*f(x); table.innerHTML += `<tr class="border-b border-slate-800 hover:bg-slate-800/40"><td class="px-3 py-2">${i}</td><td class="px-3 py-2">${x.toFixed(4)}</td><td class="px-3 py-2 text-purple-300">${f(x).toFixed(4)}</td><td class="px-3 py-2">${w}</td></tr>`; }
-            table.innerHTML += `<tr class="border-b border-slate-800 hover:bg-slate-800/40"><td class="px-3 py-2">${n}</td><td class="px-3 py-2">${b.toFixed(4)}</td><td class="px-3 py-2">${f(b).toFixed(4)}</td><td class="px-3 py-2">1</td></tr>`;
+            if (n % 3 !== 0) throw new Error("Simpson's 3/8 rule requires 'n' to be a multiple of 3.");
+            for (let i = 0; i <= n; i++) {
+                let xi = a + i * h;
+                let fi = f(xi);
+                let weight = (i === 0 || i === n) ? 1 : (i % 3 === 0 ? 2 : 3);
+                result += weight * fi;
+                table.innerHTML += `<tr class="border-b border-slate-800 hover:bg-slate-800/40"><td class="px-3 py-2">${i}</td><td class="px-3 py-2 text-amber-300">${xi.toFixed(4)}</td><td class="px-3 py-2">${fi.toFixed(6)}</td><td class="px-3 py-2">× ${weight}</td></tr>`;
+            }
             result *= (3 * h / 8);
+            
         } else if (method === 'gaussleg') {
-            let c1 = -1/Math.sqrt(3), c2 = 1/Math.sqrt(3);
+            table.innerHTML += `<tr class="border-b border-slate-800"><td colspan="4" class="px-3 py-2 text-slate-400 text-center">Using 2-Point Gauss-Legendre Quadrature</td></tr>`;
+            let c1 = -1 / Math.sqrt(3), c2 = 1 / Math.sqrt(3);
+            
             for (let i = 0; i < n; i++) {
-                let subA = a + i * h, subB = subA + h, mid = (subA + subB) / 2, diff = (subB - subA) / 2;
-                let val1 = f(mid + diff * c1), val2 = f(mid + diff * c2); result += diff * (val1 + val2);
-                table.innerHTML += `<tr class="border-b border-slate-800 hover:bg-slate-800/40"><td class="px-3 py-2">Int ${i+1}</td><td class="px-3 py-2">Gauss Pts</td><td class="px-3 py-2 text-purple-300">${val1.toFixed(3)}, ${val2.toFixed(3)}</td><td class="px-3 py-2">1</td></tr>`;
+                let subA = a + i * h, subB = subA + h;
+                let mid = (subA + subB) / 2, diff = (subB - subA) / 2;
+                
+                let val1 = f(mid + diff * c1), val2 = f(mid + diff * c2); 
+                result += diff * (val1 + val2);
+                
+                table.innerHTML += `<tr class="border-b border-slate-800 hover:bg-slate-800/40"><td class="px-3 py-2">Int ${i+1}</td><td class="px-3 py-2 text-amber-300">Gauss Pts</td><td class="px-3 py-2 text-purple-300">${val1.toFixed(3)}, ${val2.toFixed(3)}</td><td class="px-3 py-2">w = 1</td></tr>`;
             }
         }
-        resultBox.innerHTML = `<span class="text-purple-400">Integral Area:</span> ${result.toFixed(6)} <span class="text-slate-500 text-xs ml-2">(n=${n})</span>`;
-    } catch (e) { resultBox.innerHTML = `<span class="text-rose-500 font-bold">🚨 [Error] ${e.message}</span>`; }
+
+        resultBox.innerHTML = `
+            <div class="mb-2"><span class="text-purple-400 uppercase font-bold tracking-wider">Definite Integral:</span></div>
+            <div class="font-mono text-xl font-bold text-white">≈ ${result.toFixed(6)}</div>
+        `;
+        
+    } catch (e) {
+        resultBox.innerHTML = `<span class="text-rose-500 font-bold">🚨 [Error] ${e.message}</span>`;
+    }
 }
 
 // 5. MATRIX
